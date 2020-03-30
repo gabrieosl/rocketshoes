@@ -12,7 +12,13 @@ import { Container, ProductTable, Total } from './styles';
 
 import { formatPrice } from '../../util/format';
 
-function Cart({ cart, total, removeFromCart, incrementItem, decrementItem }) {
+function Cart({
+  cart,
+  total,
+  removeFromCart,
+  addToCartRequest,
+  decrementItem,
+}) {
   return (
     <Container>
       <ProductTable>
@@ -26,7 +32,7 @@ function Cart({ cart, total, removeFromCart, incrementItem, decrementItem }) {
           </tr>
         </thead>
         <tbody>
-          {cart.map((product) => (
+          {cart.map(product => (
             <tr>
               <td>
                 <img src={product.image} alt={product.title} />
@@ -49,7 +55,7 @@ function Cart({ cart, total, removeFromCart, incrementItem, decrementItem }) {
                     <MdAddCircleOutline
                       size={20}
                       color="#7159c1"
-                      onClick={() => incrementItem(product.id)}
+                      onClick={() => addToCartRequest(product.id)}
                     />
                   </button>
                 </div>
@@ -80,8 +86,8 @@ function Cart({ cart, total, removeFromCart, incrementItem, decrementItem }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  cart: state.cart.map((product) => ({
+const mapStateToProps = state => ({
+  cart: state.cart.map(product => ({
     ...product,
     subTotal: formatPrice(product.amount * product.price),
   })),
@@ -92,7 +98,7 @@ const mapStateToProps = (state) => ({
   ),
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = dispatch =>
   bindActionCreators(CartActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
